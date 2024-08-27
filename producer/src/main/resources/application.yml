@@ -1,0 +1,79 @@
+spring:
+  #  datasource:
+  #    driver-class-name: oracle.jdbc.OracleDriver
+  #    url: jdbc:oracle:thin:@//192.168.73.34:1530/MVPFMTST
+  #    username: PFM_TEST_NEW
+  #    password: XN27sRTestMv
+  #    hikari:
+  #      connection-timeout: 200000
+  #      idle-timeout: 600000
+  #      max-lifetime: 1800000
+  #      keepaliveTime: 240000
+  #      minimumIdle: 25
+  #      maximum-pool-size: 50
+  #  jpa:
+  #    properties:
+  #      hibernate.dialect: org.hibernate.dialect.OracleDialect
+  #    hibernate:
+  #      ddl-auto: none
+  #    generate-ddl: false
+  #    open-in-view: false
+  #  jdbc:
+  #    url: jdbc:oracle:thin:@//192.168.73.34:1530/MVPFMTST
+  #    username: PFM_TEST_NEW
+  #    password: XN27sRTestMv
+  application:
+    name: pfm-worker
+  kafka:
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+    consumer:
+      max-poll-records: 300
+      security:
+        protocol: SASL_PLAINTEXT
+      properties:
+        enable.auto.commit: false
+      enable-auto-commit: false
+      client-id: consumerPaymentService
+      group-id: consumerPaymentGroup
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      bootstrap-servers: 127.0.0.1:29092
+    producer:
+      security:
+        protocol: SASL_PLAINTEXT
+      client-id: producerPaymentService
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bootstrap-servers: 127.0.0.1:29092
+
+logging:
+  level:
+    root: INFO
+    kafka.producer: DEBUG
+    org.hibernate.SQL: DEBUG
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    reactor.netty.http.client: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+  pattern:
+    level: "%5p [appName=${spring.application.name:},traceId=%X{traceId},spanId=%X{spanId}]"
+
+server:
+  port: 9091
+
+payment:
+  event-stream:
+    security:
+      protocol: SASL_PLAINTEXT
+    sasl:
+      mechanism: PLAIN
+    jaas: true
+#    username: kafka
+#    password: kafka-secret
+    source:
+      registry.url: http://192.168.244.53:8081
+      topic: "PAYMENT_DEMO"
+      concurrent-listener: 12
+      row-no-start: 0
