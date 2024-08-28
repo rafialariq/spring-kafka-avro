@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: consumer-service
+  kafka:
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+    consumer:
+      max-poll-records: 300
+      security:
+        protocol: SASL_PLAINTEXT
+      properties:
+        enable.auto.commit: false
+      enable-auto-commit: false
+      client-id: consumerPaymentService
+      group-id: consumerPaymentGroup
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      bootstrap-servers: 127.0.0.1:9092
+    producer:
+      security:
+        protocol: SASL_PLAINTEXT
+      client-id: producerPaymentService
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      bootstrap-servers: 127.0.0.1:9092
+
+logging:
+  level:
+    root: INFO
+    kafka.producer: DEBUG
+    org.hibernate.SQL: DEBUG
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    reactor.netty.http.client: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+  pattern:
+    level: "%5p [appName=${spring.application.name:},traceId=%X{traceId},spanId=%X{spanId}]"
+
+server:
+  port: 9091
+
+payment:
+  event-stream:
+    security:
+      protocol: SASL_PLAINTEXT
+    sasl:
+      mechanism: PLAIN
+    jaas: true
+    username: kafka
+    password: kafka-secret
+    source:
+      registry.url: http://127.0.0.1:8081
+      topic: "PAYMENT_DEMO"
+      concurrent-listener: 12
+      row-no-start: 0

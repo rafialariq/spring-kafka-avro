@@ -1,0 +1,32 @@
+{
+  "type": "record",
+  "name": "PAYMENT",
+  "namespace": "value.PAYMENT.EXAMPLE",
+  "fields": [
+    {
+      "name": "PAYMENT_ID",
+      "type": "string",
+      "doc": "Unique identifier for the payment"
+    },
+    {
+      "name": "ORDER_ID",
+      "type": "string",
+      "doc": "Unique identifier for the associated order"
+    },
+    {
+      "name": "AMOUNT",
+      "type": "double",
+      "doc": "Total amount of the payment"
+    },
+    {
+      "name": "PAYMENT_DATE",
+      "type": "string",
+      "doc": "Date when the payment was made (YYYY-MM-DD format)"
+    },
+    {
+      "name": "PAYMENT_METHOD",
+      "type": "string",
+      "doc": "Method used for the payment (e.g., Credit Card, PayPal)"
+    }
+  ]
+}
