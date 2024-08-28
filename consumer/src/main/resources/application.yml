@@ -1,6 +1,6 @@
 spring:
   application:
-    name: producer-service
+    name: consumer-service
   kafka:
     listener:
       ack-mode: MANUAL_IMMEDIATE

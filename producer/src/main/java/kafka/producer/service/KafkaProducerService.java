@@ -44,30 +44,21 @@ public class KafkaProducerService {
                 .setPAYMENTMETHOD(request.paymentMethod())
                 .build();
 
-//        KafkaTemplate<String, PAYMENT> kafkaTemplate = kafkaConfig.kafkaTemplate();
         CompletableFuture<SendResult<String, PAYMENT>> future = kafkaTemplate.send(topic, key, paymentRecord);
-//        future.whenComplete((result, ex) -> {
-//            if (ex != null) {
-//                log.info(ex.getMessage());
-//            } else {
-//                log.info(String.format("Produced event to topic %s: key = %-10s value = %s", topic, key, paymentRecord));
-//            }
-//        });
 
         try {
-            SendResult<String, PAYMENT> result = future.get(); // Wait for the result
+            SendResult<String, PAYMENT> result = future.get();
             log.info(String.format("Produced event to topic %s: key = %-10s value = %s", topic, key, paymentRecord));
             return PaymentResponse.builder()
                     .status("Successfull send payment request")
                     .key(result.getProducerRecord().key())
                     .value(result.getProducerRecord().value().toString())
-                    .partitions(result.getProducerRecord().partition())
-                    .timestamp(result.getProducerRecord().timestamp())
+                    .partitions(result.getRecordMetadata().partition())
+                    .timestamp(result.getRecordMetadata().timestamp())
                     .build();
         } catch (InterruptedException | ExecutionException | CancellationException ex) {
             log.error("Error sending message to Kafka", ex);
             throw new RuntimeException("Failed to send message to Kafka", ex);
         }
     }
-
 }
