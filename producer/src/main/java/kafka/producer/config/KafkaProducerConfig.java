@@ -13,7 +13,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import value.PAYMENT.EXAMPLE.PAYMENT;
+import value.SOURCE.EXAMPLE.PAYMENT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class KafkaProducerConfig {
 
     private final KafkaProperties kafkaProperties;
 
-    @Value("${payment.event-stream.source.registry.url}")
+    @Value("${payment.source.registry.url}")
     private String registryUrl;
 
     @Bean

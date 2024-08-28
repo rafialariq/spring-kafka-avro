@@ -41,16 +41,8 @@ server:
   port: 9091
 
 payment:
-  event-stream:
-    security:
-      protocol: SASL_PLAINTEXT
-    sasl:
-      mechanism: PLAIN
-    jaas: true
-    username: kafka
-    password: kafka-secret
     source:
       registry.url: http://127.0.0.1:8081
       topic: "PAYMENT_DEMO"
-      concurrent-listener: 12
+      concurrent-listener: 10
       row-no-start: 0

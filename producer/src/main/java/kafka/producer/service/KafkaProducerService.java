@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
-import value.PAYMENT.EXAMPLE.PAYMENT;
+import value.SOURCE.EXAMPLE.PAYMENT;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 public class KafkaProducerService {
 
-    @Value("${payment.event-stream.source.topic:PAYMENT_DEMO}")
+    @Value("${payment.source.topic:PAYMENT_DEMO}")
     private String topic;
 
     private final KafkaProducerConfig kafkaConfig;
@@ -33,8 +33,7 @@ public class KafkaProducerService {
 
         String paymentId = UUID.randomUUID().toString();
         String date = LocalDate.now().toString();
-        String key = "PAY_" + paymentId;
-
+        String key = "PAY-" + paymentId;
 
         PAYMENT paymentRecord = PAYMENT.newBuilder()
                 .setPAYMENTID(paymentId)
